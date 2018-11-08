@@ -16,24 +16,32 @@ pipeline {
                 sh 'mvn test'
             }
             post {
-					always {
-					  step([$class: 'Mailer',
-						notifyEveryUnstableBuild: true,
-						recipients: "niejing@anydef.com",
-						sendToIndividuals: true])
-						
-						step(
-						 junit 'target/surefire-reports/*.xml'	
-						)
-					}
-				}               
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
             }
         }
         stage('Deliver') { 
             steps {
                 sh './jenkins/scripts/deliver.sh' 
             }
-			
         }
+		 post {
+        success {
+            emailext (
+                subject: "'${env.JOB_NAME} [${env.BUILD_NUMBER}]' 更新正常",
+                body: """
+                详情：
+                SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'
+                状态：${env.JOB_NAME} jenkins 更新运行正常 
+                URL ：${env.BUILD_URL}
+                项目名称 ：${env.JOB_NAME} 
+                项目更新进度：${env.BUILD_NUMBER}
+                """,
+                to: "myname@gmail.com",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                )
+                }   
+    }
     }
 }
