@@ -16,17 +16,7 @@ pipeline {
                 sh 'mvn test'
             }
             post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
-                }
-            }
-        }
-        stage('Deliver') { 
-            steps {
-                sh './jenkins/scripts/deliver.sh' 
-            }
-			post {
-			success {
+				 success {
 				emailext (
 					subject: "'${env.JOB_NAME} [${env.BUILD_NUMBER}]' 更新正常",
 					body: """
@@ -37,26 +27,21 @@ pipeline {
 					项目名称 ：${env.JOB_NAME} 
 					项目更新进度：${env.BUILD_NUMBER}
 					""",
-					to: "niejing@anydef.com",
+					to: "myname@gmail.com",
 					recipientProviders: [[$class: 'DevelopersRecipientProvider']]
 					)
-					}   
-			failure {
-				emailext (
-					subject: "'${env.JOB_NAME} [${env.BUILD_NUMBER}]' 更新失败",
-					body: """
-					详情：
-					FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'             
-					状态：${env.JOB_NAME} jenkins 运行失败 
-					URL ：${env.BUILD_URL}
-					项目名称 ：${env.JOB_NAME} 
-					项目更新进度：${env.BUILD_NUMBER}
-					""",
-					to: "niejing@anydef.com",
-					recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-					)
-                    }
-    }
-}
+                }   
+				
+                always {
+                    junit 'target/surefire-reports/*.xml'					
+                }
+            }
+        }
+        stage('Deliver') { 
+            steps {
+                sh './jenkins/scripts/deliver.sh' 
+            }
+			
         }
     }
+}
