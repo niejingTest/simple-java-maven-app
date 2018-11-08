@@ -26,7 +26,8 @@ pipeline {
                 sh './jenkins/scripts/deliver.sh' 
             }
         }
-		 post {
+    }
+	post {
         success {
             emailext (
                 subject: "'${env.JOB_NAME} [${env.BUILD_NUMBER}]' 更新正常",
@@ -38,10 +39,9 @@ pipeline {
                 项目名称 ：${env.JOB_NAME} 
                 项目更新进度：${env.BUILD_NUMBER}
                 """,
-                to: "myname@gmail.com",
+                to: "niejing@anydef.com",
                 recipientProviders: [[$class: 'DevelopersRecipientProvider']]
                 )
-                }   
-    }
+            }   
     }
 }
