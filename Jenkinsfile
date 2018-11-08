@@ -27,7 +27,7 @@ pipeline {
 					项目名称 ：${env.JOB_NAME} 
 					项目更新进度：${env.BUILD_NUMBER}
 					""",
-					to: "myname@gmail.com",
+					to: "niejing@anydef.com",
 					recipientProviders: [[$class: 'DevelopersRecipientProvider']]
 					)
                 }   
