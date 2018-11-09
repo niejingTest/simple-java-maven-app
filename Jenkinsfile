@@ -30,7 +30,7 @@ pipeline {
 	post {
         success {
             emailext (
-                subject: "'${env.JOB_NAME} [${env.BUILD_NUMBER}]' 更新正常",
+                subject: "'${env.JOB_NAME} [${env.BUILD_NUMBER}]' 更新正常     ",
                 body: """
                 详情：
                 SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'
